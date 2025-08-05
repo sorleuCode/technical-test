@@ -1,136 +1,141 @@
-# Product List App
+# Developer Technical Test – Product List App
 
-A simple **fullstack Next.js** app to manage a personal product list with login and drag-and-drop reordering.  
-This project was built as a **developer technical test** using **TypeScript, MongoDB, and Next.js API routes**.
-
----
-
-## Features
-
-- Email-only login (no password)  
-- Add products with:  
-  - Product name  
-  - Amount  
-  - Comment (optional)  
-- View, edit, delete, and reorder product list (drag-and-drop)  
-- Inline editing of products  
-- Reordering persists to the database  
-- Each email only sees their own products  
-- Fully responsive with a clean dashboard-style UI  
-- Sticky top header with logout button  
+🧩 **Goal**  
+Build a simple **fullstack Next.js** app (frontend + backend) to manage a personal product list.
 
 ---
 
-## Tech Stack
+## 📋 Features
 
-- **Next.js 14** (Pages routing)  
-- **TypeScript**  
-- **MongoDB + Mongoose**  
-- **Tailwind CSS** (used only in layout components)  
-- **Shadcn/UI** for reusable UI components  
-- **DnD Kit** for drag-and-drop reordering  
+✅ **Email-only Authentication** – Simple login with just an email address  
+✅ **Product Management** – Create, view, edit, and delete products with:  
+- Product name  
+- Amount  
+- Comment (optional)  
 
----
-
-## Folder Structure
-
-project-root
-│
-├── pages/ # Next.js routing (thin wrappers to screens)
-│ └── product-list.tsx
-│
-├── screens/ # Screens (no styling, only logic)
-│ ├── auth/
-│ │ ├── login.page.tsx
-│ │ └── .gitkeep # Keeps folder in Git if empty
-│ └── product-list/
-│ ├── product-item.tsx
-│ ├── product-form.tsx
-│ ├── product-list.page.tsx
-│ └── .gitkeep
-│
-├── layout/ # Reusable UI components (with Tailwind/Shadcn)
-│ ├── button.layout.tsx
-│ ├── input.layout.tsx
-│ ├── card.layout.tsx
-│ ├── text.layout.tsx
-│ ├── heading.layout.tsx
-│ ├── flex.layout.tsx
-│ ├── stack.layout.tsx
-│ ├── product-card.layout.tsx
-│ ├── page-container.layout.tsx
-│ └── .gitkeep
-│
-├── service/ # Frontend fetch layer
-│ ├── auth.service.ts
-│ ├── product.service.ts
-│ └── .gitkeep
-│
-├── api/ # API routes (authentication & product CRUD)
-│ ├── products/
-│ │ ├── index.ts # GET + POST
-│ │ ├── [id].ts # PUT + DELETE
-│ │ ├── reorder.ts # PATCH reorder
-│ │ └── .gitkeep
-│ └── auth/
-│ ├── login.ts
-│ └── .gitkeep
-│
-├── db/ # Database and models
-│ ├── db.config.ts
-│ ├── product.model.ts
-│ └── .gitkeep
-│
-├── lib/ # Helpers
-│ ├── auth.ts # Extracts email from cookie
-│ └── .gitkeep
-│
-├── types/ # TypeScript types
-│ ├── product.type.ts
-│ └── .gitkeep
-│
-└── README.md
-
-yaml
-Copy
-Edit
-
-> **Note:**  
-> Empty folders include a `.gitkeep` file to ensure they are tracked in Git.
+✅ **Drag & Drop Reordering** – Intuitive product list reordering with visual feedback  
+✅ **User Isolation** – Each user sees only their own products  
+✅ **Responsive Design** – Optimized for both web and mobile  
 
 ---
 
-## Local Setup
+## ⚙️ Tech Stack
 
-### 1. Clone the repository
+**Frontend:** Next.js 14, TypeScript, Tailwind CSS (layout only), Shadcn/UI, @dnd-kit  
+**Backend:** Next.js API Routes, JWT Authentication  
+**Database:** MongoDB with Mongoose ORM  
 
+---
+
+## 🚀 Local Setup
+
+### 1. Clone and install dependencies
 ```bash
 git clone <your-fork-url> product-list-app
 cd product-list-app
-2. Install dependencies
-bash
-Copy
-Edit
 npm install
-3. Create .env.local file
+2. Set up environment variables
+Create a .env.local file in the project root:
+
 env
 Copy
 Edit
-MONGODB_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/test
+MONGODB_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/test
 JWT_SECRET=your-secret
 NEXT_PUBLIC_BASE_URL=http://localhost:3000
-4. Run the development server
+3. Start the development server
 bash
 Copy
 Edit
 npm run dev
-The app will run at http://localhost:3000
+Open your browser and navigate to: http://localhost:3000
 
-How Login Works
-User enters their email on the login page.
+💡 How It Works
+Authentication
+Enter any email address to log in (no password required)
 
-A JWT token is generated and stored in a cookie.
+A JWT token is stored in a cookie for session management
 
-Subsequent API requests use the cookie to identify the user.
+Each user's data is completely isolated
 
-Each user only sees their own products.
+Product Management
+Add Products: Create new items with name, amount, and optional comment
+
+Edit/Delete: Update or remove any product from your list
+
+Reorder: Drag products by their handle to reorder your list
+
+Real-time Updates: All changes are immediately saved to the database
+
+🔗 API Endpoints
+POST /api/auth/login – Email-only authentication
+
+GET /api/products – List user's products
+
+POST /api/products – Create new product
+
+PUT /api/products/[id] – Update existing product
+
+DELETE /api/products/[id] – Delete product
+
+PATCH /api/products/reorder – Reorder products
+
+📁 Architecture
+Folder Structure
+
+pgsql
+Copy
+Edit
+project-root
+│
+├── pages/                     # Next.js routing (references screens)
+│   └── product-list.tsx
+│
+├── pages/api/                  # API routes (authentication & product CRUD)
+│   ├── products/
+│   │   ├── index.ts            # GET + POST
+│   │   ├── [id].ts             # PUT + DELETE
+│   │   └── reorder.ts          # PATCH reorder
+│   └── auth/
+│       └── login.ts
+│
+├── screens/                    # Screens (logic only, no styling)
+│   ├── auth/
+│   │   └── login.page.tsx
+│   └── product-list/
+│       ├── product-list.page.tsx
+│       ├── product-item.tsx
+│       └── product-form.tsx
+│
+├── layout/                     # Reusable UI components (Tailwind + Shadcn)
+│   ├── button.layout.tsx
+│   ├── input.layout.tsx
+│   ├── card.layout.tsx
+│   ├── text.layout.tsx
+│   ├── heading.layout.tsx
+│   ├── flex.layout.tsx
+│   ├── stack.layout.tsx
+│   ├── page-container.layout.tsx
+│   └── product-card.layout.tsx
+│
+├── service/                    # Frontend fetch layer
+│   ├── auth.service.ts
+│   └── product.service.ts
+│
+├── db/                         # Database & models
+│   ├── db.config.ts
+│   └── product.model.ts
+│
+├── lib/                        # Utility functions
+│   └── auth.ts                 # Extracts email from cookie
+│
+├── types/                      # TypeScript types
+│   └── product.type.ts
+│
+└── README.md
+Note: Styling is handled only in layout/ components.
+Screens contain only logic and structure, no Tailwind classes.
+
+🔗 Live App
+Deployed on Vercel: <your-vercel-link>
+
